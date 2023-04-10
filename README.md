@@ -29,5 +29,43 @@
   }
 ```
 - Modify Procfile.dev
-```dev
+`web: bin/rails server -p 3000`
+
+## Add react components
+branch: components
+The React app will be served from app/views/home/index.html.erb
+- $ rails generate controller Home index
+```html
+  <div id="root"></div>
 ```
+Create app/javascript/components/App.js  
+In app/javascript/application.js, import a App component and render it in the div element from the home views 
+```js
+  import React from 'react';
+  import { createRoot } from 'react-dom/client';
+  import App from './components/App';
+
+  const container = document.getElementById('root');
+  const root = createRoot(container);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    root.render(<App name="World" />);
+  })
+```
+Create a functional component in App.js
+```js
+  import React from "react"
+
+  const App = ({name}) => {
+    return (
+      <>
+        <h1>Hello, {name}!</h1>
+      </>
+    )
+  }
+
+  export default App
+```  
+Add root route to config/routes.rb
+`root to: 'home#index'`
+Should see "Hello, World!" on http://localhost:3000/
